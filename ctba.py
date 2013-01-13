@@ -6,17 +6,20 @@ import csv
 from datetime import date, time, timedelta
 import json
 from Tkinter import *
+from jinja2 import Environment, FileSystemLoader
 
 class BaseGraph(object):
 	"""
 	Base operations with time, date, data formatting
 	"""
-	def __init__(self, csv_table_name, delimiter, categories_list, date_delimiter):
+	def __init__(self, csv_table_name, delimiter, categories_list, date_delimiter, templates_path, reports_path):
 		self.csv_table_name = csv_table_name
 		self.delimiter = delimiter
 		self.categories_list = categories_list
 		self.date_delimiter = date_delimiter
 		self.get_table_data()
+		self.env = Environment(loader=FileSystemLoader(templates_path))
+		self.reports_path = reports_path
 
 	def rel(self, arg):
 		return path.join(path.dirname(__file__), arg)
@@ -142,11 +145,25 @@ class BaseGraph(object):
 		else:
 			s2 = self.nice_float(s2)
 		return "<tr><td><b>%s:</b></td><td> %s</td></tr>" % (s1, s2)
+		
+	def render_template(self, template_name, context_dict):
+		t = self.env.get_template(template_name)
+		return t.render(context_dict)
+	
+	def write_report(self, report_name, data_dict):
+		path_to_report = os.path.join(self.reports_path, report_name)
+		f = open(path_to_report, 'w')
+		f.write(self.render_template(report_name, data_dict))
+		f.close()
 
 
 class CTBAGraph(BaseGraph):
-	def __init__(self, csv_table_name, delimiter, categories_list, date_delimiter):
-		BaseGraph.__init__(self, csv_table_name, delimiter, categories_list, date_delimiter)
+	#def __init__(self, csv_table_name, delimiter, categories_list, date_delimiter, templates_path, reports_path):
+	#	BaseGraph.__init__(
+	#		self, csv_table_name, delimiter, categories_list, date_delimiter, templates_path, reports_path)
+
+	def __init__(*args):
+		BaseGraph.__init__(*args)
 
 	def plot_graph_1(self, data_filename):
 		# date_time format is YYYY-MM-DD-HH-MM-00
@@ -345,9 +362,11 @@ class CTBAGraph(BaseGraph):
 		time out is row[4]
 		minutes_spanded is row[6]
 		"""
-		f = open(header_filename, 'w')
-		f.write('var graph_3_header = "Учет рабочего времени сотрудников за %s"' % d)
-		f.close()
+		#f = open(header_filename, 'w')
+		#f.write('var graph_3_header = "Учет рабочего времени сотрудников за %s"' % d)
+		#f.close()
+		
+		self.write_report('graph_3.html', dict(graph_3_data = d))
 		
 		v_legend = map(str, range(25))
 		
@@ -497,7 +516,7 @@ class CTBAUI(Frame):
 			return True
 
 
-g = CTBAGraph('csv_test_table_1.csv', ';', ['A', 'B', 'C', 'D', 'E'], '.')
+g = CTBAGraph('csv_test_table_1.csv', ';', ['A', 'B', 'C', 'D', 'E'], '.', 'templates/', 'reports/')
 
 root = Tk()
 root.title('CTBA')

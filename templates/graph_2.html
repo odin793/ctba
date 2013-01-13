@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Одновременное нахождение людей на объекте</title>
+        <link rel="stylesheet" href="../js/style.css" type="text/css">
+        <script src="../js/amcharts.js" type="text/javascript"></script>        
+        <script src="../js/graph_2_data.js" type="text/javascript"></script>
+        <script type="text/javascript">
+           var chart;
+            AmCharts.ready(function () {
+                // SERIAL CHART
+                chart = new AmCharts.AmSerialChart();
+								chart.pathToImages = "../js/images/";
+                chart.dataProvider = chartData;
+                chart.categoryField = "time";
+                chart.plotAreaBorderAlpha = 0.2;
+
+                // AXES
+                // category
+                var categoryAxis = chart.categoryAxis;
+                categoryAxis.gridAlpha = 0.1;
+                categoryAxis.axisAlpha = 0;
+                categoryAxis.gridPosition = "start";
+				categoryAxis.title = "Часы";
+
+                // value
+                var valueAxis = new AmCharts.ValueAxis();
+                valueAxis.stackType = "regular";
+                valueAxis.gridAlpha = 0.1;
+                valueAxis.axisAlpha = 0;
+				valueAxis.integersOnly = false;
+				valueAxis.title = 'Клиенты';
+                chart.addValueAxis(valueAxis);
+
+                // GRAPHS
+                // first graph    
+                var graph = new AmCharts.AmGraph();
+                graph.title = "Cat A";
+                graph.labelText = "[[value]]";
+                graph.valueField = "A";
+                graph.type = "column";
+                graph.lineAlpha = 0;
+                graph.fillAlphas = 1;
+                graph.lineColor = "#C72C95";
+                chart.addGraph(graph);
+
+                // second graph              
+                
+                graph = new AmCharts.AmGraph();
+                graph.title = "Cat B";
+                graph.labelText = "[[value]]";
+                graph.valueField = "B";
+                graph.type = "column";
+                graph.lineAlpha = 0;
+                graph.fillAlphas = 1;
+                graph.lineColor = "#D8E0BD";
+                chart.addGraph(graph);
+
+                // third graph                              
+                graph = new AmCharts.AmGraph();
+                graph.title = "Cat C";
+                graph.labelText = "[[value]]";
+                graph.valueField = "C";
+                graph.type = "column";
+                graph.lineAlpha = 0;
+                graph.fillAlphas = 1;
+                graph.lineColor = "#B3DBD4";
+                chart.addGraph(graph);
+
+                // fourth graph  
+                graph = new AmCharts.AmGraph();
+                graph.title = "Cat D";
+                graph.labelText = "[[value]]";
+                graph.valueField = "D";
+                graph.type = "column";
+                graph.lineAlpha = 0;
+                graph.fillAlphas = 1;
+                graph.lineColor = "#69A55C";
+                chart.addGraph(graph);
+
+                // fifth graph
+                graph = new AmCharts.AmGraph();
+                graph.title = "Cat E";
+                graph.labelText = "[[value]]";
+                graph.valueField = "E";
+                graph.type = "column";
+                graph.lineAlpha = 0;
+                graph.fillAlphas = 1;
+                graph.lineColor = "#B5B8D3";
+                chart.addGraph(graph);
+
+								                
+								// sixth graph   
+                graph = new AmCharts.AmGraph();
+                graph.title = "All";
+                graph.labelText = "[[value]]";
+                graph.valueField = "all";
+                graph.type = "column";
+                graph.lineAlpha = 0;
+                graph.fillAlphas = 1;
+                graph.lineColor = "#F4E23B";
+                chart.addGraph(graph);
+                
+                // LEGEND                  
+                
+                var legend = new AmCharts.AmLegend();
+                legend.borderAlpha = 0.2;
+                legend.horizontalGap = 10;
+                chart.addLegend(legend);
+                
+								 var chartScrollbar = new AmCharts.ChartScrollbar();
+								chartScrollbar.graph = graph;
+								chartScrollbar.graphType = "column";
+								chartScrollbar.autoGridCount = true;
+								chartScrollbar.scrollbarHeight = 25;
+                chart.addChartScrollbar(chartScrollbar);
+								//var sbsettings = new AmCharts.ChartScrollbarSettings();
+								//sbsettings.graph = graph;
+								//sbsettings.backgroundColor = "green";
+								//chart.chartScrollbarSettings = sbsettings;
+
+                
+                // WRITE
+                chart.write("chartdiv");
+            });
+
+            // this method sets chart 2D/3D
+
+
+            function setDepth() {
+                if (document.getElementById("rb1").checked) {
+                    chart.depth3D = 0;
+                    chart.angle = 0;
+                } else {
+                    chart.depth3D = 25;
+                    chart.angle = 30;
+                }
+                chart.validateNow();
+            }
+        </script>
+        <script type="text/javascript" src="../js/graph_2_statistics.js"></script>
+    </head>
+    
+    <body>
+        <div id="chartdiv" style="width: 1100px; height: 400px;"></div>
+        <div style="margin-left:30px;">
+	        <input type="radio" checked="true" name="group" id="rb1" onclick="setDepth()">2D
+	        <input type="radio" name="group" id="rb2" onclick="setDepth()">3D
+			<div id="graph_2_statistics"></div>
+            <script type="text/javascript">
+                document.getElementById("graph_2_statistics").innerHTML = graph_2_statistics;
+            </script>
+
+		</div>
+    </body>
+
+</html>
