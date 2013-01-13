@@ -148,7 +148,7 @@ class BaseGraph(object):
 		
 	def render_template(self, template_name, context_dict):
 		t = self.env.get_template(template_name)
-		return t.render(context_dict)
+		return t.render(context_dict).encode('utf-8')
 	
 	def write_report(self, report_name, data_dict):
 		path_to_report = os.path.join(self.reports_path, report_name)
@@ -158,10 +158,6 @@ class BaseGraph(object):
 
 
 class CTBAGraph(BaseGraph):
-	#def __init__(self, csv_table_name, delimiter, categories_list, date_delimiter, templates_path, reports_path):
-	#	BaseGraph.__init__(
-	#		self, csv_table_name, delimiter, categories_list, date_delimiter, templates_path, reports_path)
-
 	def __init__(*args):
 		BaseGraph.__init__(*args)
 
@@ -366,7 +362,7 @@ class CTBAGraph(BaseGraph):
 		#f.write('var graph_3_header = "Учет рабочего времени сотрудников за %s"' % d)
 		#f.close()
 		
-		self.write_report('graph_3.html', dict(graph_3_data = d))
+		self.write_report('graph_3.html', {'graph_3_date': d})
 		
 		v_legend = map(str, range(25))
 		
