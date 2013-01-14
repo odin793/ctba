@@ -5,10 +5,11 @@
 	    <title>Одновременное нахождение людей на объекте</title>
 	    <link rel="stylesheet" href="../js/style.css" type="text/css">
 	    <script src="../js/amcharts.js" type="text/javascript"></script>        
-	    <script src="../js/graph_2_data.js" type="text/javascript"></script>
 	    <script type="text/javascript">
  	    	var chart;
-	    	AmCharts.ready(function () {
+				var chartData = {{ chartData }} // html template variable
+	    	
+				AmCharts.ready(function () {
 	        // SERIAL CHART
 	      	chart = new AmCharts.AmSerialChart();
 					chart.pathToImages = "../js/images/";

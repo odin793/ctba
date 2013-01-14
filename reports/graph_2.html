@@ -1,17 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-    
-		
-
     <head>
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	    <title>Одновременное нахождение людей на объекте</title>
 	    <link rel="stylesheet" href="../js/style.css" type="text/css">
 	    <script src="../js/amcharts.js" type="text/javascript"></script>        
-	    <script src="../js/graph_2_data.js" type="text/javascript"></script>
 	    <script type="text/javascript">
  	    	var chart;
-	    	AmCharts.ready(function () {
+				var chartData = [{"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 0}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 1}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 2}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 3}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 4}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 5}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 6}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 7}, {"A": 0.67, "all": 1, "B": 0, "E": 0, "D": 0, "C": 0.33, "time": 8}, {"A": 0, "all": 0.33, "B": 0.33, "E": 0, "D": 0, "C": 0, "time": 9}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 10}, {"A": 0.33, "all": 0.33, "B": 0, "E": 0, "D": 0, "C": 0, "time": 11}, {"A": 0.67, "all": 1, "B": 0.33, "E": 0, "D": 0, "C": 0, "time": 12}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 13}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 14}, {"A": 0, "all": 0.33, "B": 0, "E": 0, "D": 0.33, "C": 0, "time": 15}, {"A": 0.67, "all": 0.67, "B": 0, "E": 0, "D": 0, "C": 0, "time": 16}, {"A": 0, "all": 0.67, "B": 0.33, "E": 0, "D": 0.33, "C": 0, "time": 17}, {"A": 0, "all": 0.67, "B": 0, "E": 0.33, "D": 0, "C": 0.33, "time": 18}, {"A": 0, "all": 0.33, "B": 0, "E": 0, "D": 0, "C": 0.33, "time": 19}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 20}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 21}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 22}, {"A": 0, "all": 0, "B": 0, "E": 0, "D": 0, "C": 0, "time": 23}]
+	    	
+				AmCharts.ready(function () {
 	        // SERIAL CHART
 	      	chart = new AmCharts.AmSerialChart();
 					chart.pathToImages = "../js/images/";
@@ -137,91 +135,92 @@
 	         chart.validateNow();
 	       }
       </script>
-      <script type="text/javascript" src="../js/graph_2_statistics.js"></script>
     </head>
     
     <body>
-        <div id="chartdiv" style="width: 1100px; height: 400px;"></div>
+				
+        
+				<div id="chartdiv" style="width: 1100px; height: 400px;"></div>
         <div style="margin-left:30px;">
 	        <input type="radio" checked="true" name="group" id="rb1" onclick="setDepth()">2D
 	        <input type="radio" name="group" id="rb2" onclick="setDepth()">3D
 			<div id="graph_2_statistics">
 				<p>
-					Одновременное нахождение людей на объекте 1.11.2012 - 1.12.2012
+					Одновременное нахождение людей на объекте 1.11.2012 - 1.13.2012
 				</p>
 				
 				<table>
 					<tr>
 						<td><b>Сумма по каждому виду карт, чел:</b></td>
 						<td> 
-			
-				<b>A</b> : 3  ; 
-			
-				<b>B</b> : 1.5  ; 
-			
-				<b>C</b> : 1.5  ; 
-			
-				<b>D</b> : 1  ; 
-			
-				<b>E</b> : 0.5 
 					
-		 </td>
+						<b>A</b> : 2.33  ; 
+						
+						<b>B</b> : 1  ; 
+						
+						<b>C</b> : 1  ; 
+						
+						<b>D</b> : 0.67  ; 
+						
+						<b>E</b> : 0.33 
+								
+				 </td>
 					</tr>
 					
 					<tr>
 						<td><b>Среднее значение числа посетителей в час по каждому виду карт, чел:</b></td>
 						<td> 
-			
-				<b>A</b> : 0.12  ; 
-			
-				<b>B</b> : 0.06  ; 
-			
-				<b>C</b> : 0.06  ; 
-			
-				<b>D</b> : 0.04  ; 
-			
-				<b>E</b> : 0.02 
 					
-		 </td>
+						<b>A</b> : 0.1  ; 
+						
+						<b>B</b> : 0.04  ; 
+						
+						<b>C</b> : 0.04  ; 
+						
+						<b>D</b> : 0.03  ; 
+						
+						<b>E</b> : 0.01 
+								
+				 </td>
 					</tr>
 					
 					<tr>
 						<td><b>Среднее общее значение числа посетителей в час, чел:</b></td>
-						<td> 0.31 </td> 
+						<td> 0.22 </td> 
 					</tr>
 					
 					<tr>
 						<td><b>Максимальное число одновременно находящихся клиентов каждого вида карт, чел:</b></td>
 						<td> 
-			
-				<b>A</b> : 1  ; 
-			
-				<b>B</b> : 0.5  ; 
-			
-				<b>C</b> : 0.5  ; 
-			
-				<b>D</b> : 0.5  ; 
-			
-				<b>E</b> : 0.5 
 					
-		 </td>
+						<b>A</b> : 0.67  ; 
+						
+						<b>B</b> : 0.33  ; 
+						
+						<b>C</b> : 0.33  ; 
+						
+						<b>D</b> : 0.33  ; 
+						
+						<b>E</b> : 0.33 
+								
+				 </td>
 					</tr>
 					
 					<tr>
 						<td><b>Минимальное время нахождения одного посетителя по каждому типу карт, мин:</b></td>
 						<td> 
-			
-				<b>A</b> : 50  ; 
-			
-				<b>B</b> : 60  ; 
-			
-				<b>C</b> : 50  ; 
-			
-				<b>D</b> : 120  ; 
-			
-				<b>E</b> : 26 
 					
-		 </td>
+						<b>A</b> : 50  ; 
+						
+						<b>B</b> : 60  ; 
+						
+						<b>C</b> : 50  ; 
+						
+						<b>D</b> : 120  ; 
+						
+						<b>E</b> : 26 
+								
+				 </td>
 					</tr>
 					
 					<tr>
@@ -232,18 +231,18 @@
 					<tr>
 						<td><b>Максимальное время нахождения одного посетителя по каждому типу карт, мин:</b></td>
 						<td> 
-			
-				<b>A</b> : 320  ; 
-			
-				<b>B</b> : 74  ; 
-			
-				<b>C</b> : 80  ; 
-			
-				<b>D</b> : 162  ; 
-			
-				<b>E</b> : 26 
 					
-		 </td>
+						<b>A</b> : 320  ; 
+						
+						<b>B</b> : 74  ; 
+						
+						<b>C</b> : 80  ; 
+						
+						<b>D</b> : 162  ; 
+						
+						<b>E</b> : 26 
+								
+				 </td>
 					</tr>
 					
 					<tr>
@@ -258,7 +257,7 @@
 					
 					<tr>
 						<td><b>Интервал(ы) максимального количества посетителей в целом, ч:</b></td>
-						<td> [(8, 9)] </td> 
+						<td> [(8, 9), (12, 13)] </td> 
 					</tr>
 				</table>
 			</div>

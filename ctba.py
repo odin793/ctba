@@ -24,7 +24,7 @@ class BaseGraph(object):
 	def rel(self, arg):
 		return path.join(path.dirname(__file__), arg)
 
-		def is_service(self, row):
+	def is_service(self, row):
 		if int(row[0]) > 1000:
 			return True
 		else:
@@ -183,12 +183,16 @@ class CTBAGraph(BaseGraph):
 		graph_1_data_file.close()
 		print 'graph 1 is successfully plotted' 
 
-	def plot_graph_2(self, d1, d2, data_filename, stat_filename):
+	def plot_graph_2(self, d1, d2):
 		"""
 		graph_2, average day data for period from d1 to d2
 		simultaneous means one hour period
 		"""
-		# get graph_2 data and statistics
+		
+		if d1 == d2:
+			from_to_string = d1
+		else:
+			from_to_string = '%s - %s' % (d1, d2)
 		
 		# period from monday to tuesday is 2 days
 		number_of_days = (self.string_to_date(d2)-self.string_to_date(d1)).days + 1
@@ -255,9 +259,7 @@ class CTBAGraph(BaseGraph):
 		max_time_spended_for_each_cat = [max(t) for t in times_list_for_each_cat]
 		min_time_spended_for_each_cat = [min(t) for t in times_list_for_each_cat]
 
-
-		# write graph 2 data
-		graph_2_data = []
+		graph_2_data = []	# data for graph plotting
 		for h, p in pairs:
 			temp_d = {}
 			temp_d['time'] = h
@@ -266,18 +268,12 @@ class CTBAGraph(BaseGraph):
 				temp_d[cat] = self.nice_float(p[self.categories_list.index(cat)])
 			graph_2_data.append(temp_d)
 
-		graph_2_data_file = open(data_filename, 'w')
-		graph_2_data_file.write('var chartData = ')
-		json.dump(graph_2_data, graph_2_data_file)
-		graph_2_data_file.close()
-		
-		# write graph_2 statistics
-		if d1 == d2:
-			from_to_string = d1
-		else:
-			from_to_string = '%s - %s' % (d1, d2)
+		chartData = json.dumps(graph_2_data)
+
+		# write graph_2 data and statistics
 		
 		context_dict = {
+			'chartData': chartData,
 			'from_to_string': from_to_string,
 			'sum_people_for_each_cat': self.cat_value_pairs(sum_people_for_each_cat),
 			'average_people_for_each_cat': self.cat_value_pairs(average_people_for_each_cat),
@@ -433,7 +429,7 @@ class CTBAUI(Frame):
 		if v1 and v2:
 			self.message['text'] = 'ok'
 			self.message['bg'] = 'green'
-			self.ctba_graph_inst.plot_graph_2(user_data1, user_data2, 'js/graph_2_data.js', 'js/graph_2_statistics.js')
+			self.ctba_graph_inst.plot_graph_2(user_data1, user_data2)
 			#graph_2(user_data1, user_data2)	
 		else:
 			self.message['text'] = 'bad'
