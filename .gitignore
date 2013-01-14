@@ -1,4 +1,5 @@
 *.pyc
 general/
-js/
+js/graph_3.png
 venv/
+.DS_Store

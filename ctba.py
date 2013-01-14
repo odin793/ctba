@@ -24,6 +24,27 @@ class BaseGraph(object):
 	def rel(self, arg):
 		return path.join(path.dirname(__file__), arg)
 
+		def is_service(self, row):
+		if int(row[0]) > 1000:
+			return True
+		else:
+			return False
+
+	def get_date_enter(self, row):
+		return row[1]
+
+	def get_time_enter(self, row):
+		return row[2]
+
+	def get_category_type(self, row):
+		return row[7]
+
+	def get_price(self, row):
+		return int(row[8])
+
+	def get_minutes_spanded(self, row):
+		return row[6]
+	
 	def get_table_data(self):
 		tablename = self.rel(self.csv_table_name)
 		#print tablename
@@ -68,27 +89,6 @@ class BaseGraph(object):
 		date_time_enter_str = '%s-%s-%s-%s-%s' % (YYYY, MM, DD, hh, mm)
 		return date_time_enter_str
 
-	def is_service(self, row):
-		if int(row[0]) > 1000:
-			return True
-		else:
-			return False
-
-	def get_date_enter(self, row):
-		return row[1]
-
-	def get_time_enter(self, row):
-		return row[2]
-
-	def get_category_type(self, row):
-		return row[7]
-
-	def get_price(self, row):
-		return int(row[8])
-
-	def get_minutes_spanded(self, row):
-		return row[6]
-
 	def get_time_in_out_pair(self, row):
 		time_enter = self.get_time_enter(row)
 		h_in, min_in = map(int, time_enter.split(':'))
@@ -101,8 +101,6 @@ class BaseGraph(object):
 		return (h_in, h_out)
 
 	def filter_rows(self, date_begin, date_end=None, time_begin=None, time_end=None):
-	    #date_enter = self.get_date_enter(row)
-	    #time_enter = self.get_time_enter(row)
 	    # we always have the some start date
 	    filtered_data = [row for row in self.table_data if \
 	    	self.cmp_dates(self.get_date_enter(row), date_begin)] 
@@ -131,21 +129,9 @@ class BaseGraph(object):
 		else:
 			return float('%.2f' % f)
 
-	def nice_list(self, l):
-		if type(l[0]) == tuple:
-			return '; '.join([str(i) for i in l])
-		return ', '.join(
-			[str({"<b>%s</b>" % self.categories_list[ind]: self.nice_float(val)})[1:-1] \
-				for ind, val in enumerate(l)]
-		)
+	def cat_value_pairs(self, values_list):
+		return [(self.categories_list[ind], self.nice_float(value)) for ind, value in enumerate(values_list)]
 
-	def html_string(self, s1, s2):
-		if type(s2) == list:
-			s2 = self.nice_list(s2)
-		else:
-			s2 = self.nice_float(s2)
-		return "<tr><td><b>%s:</b></td><td> %s</td></tr>" % (s1, s2)
-		
 	def render_template(self, template_name, context_dict):
 		t = self.env.get_template(template_name)
 		return t.render(context_dict).encode('utf-8')
@@ -201,7 +187,6 @@ class CTBAGraph(BaseGraph):
 		"""
 		graph_2, average day data for period from d1 to d2
 		simultaneous means one hour period
-	    time spanded in minutes is row[6]
 		"""
 		# get graph_2 data and statistics
 		
@@ -281,69 +266,32 @@ class CTBAGraph(BaseGraph):
 				temp_d[cat] = self.nice_float(p[self.categories_list.index(cat)])
 			graph_2_data.append(temp_d)
 
-		#graph_2_data_file = open('js/graph_2_data.js', 'w')
 		graph_2_data_file = open(data_filename, 'w')
 		graph_2_data_file.write('var chartData = ')
 		json.dump(graph_2_data, graph_2_data_file)
 		graph_2_data_file.close()
 		
-
 		# write graph_2 statistics
-		statistics_list = []
 		if d1 == d2:
 			from_to_string = d1
 		else:
 			from_to_string = '%s - %s' % (d1, d2)
 		
-		statistics_list.append('<p>%s %s</p>' % (
-			'Одновременное нахождение людей на объекте',from_to_string))
-		statistics_list.append('<table>')
-		statistics_list.append(self.html_string(
-			'Сумма по каждому виду карт, чел',
-			sum_people_for_each_cat
-		))
-		statistics_list.append(self.html_string(
-			'Среднее значение числа посетителей в час по каждому виду карт, чел',
-			average_people_for_each_cat
-		))
-		statistics_list.append(self.html_string(
-			'Среднее общее значение числа посетителей в час, чел',
-			average_people_all
-		))
-		statistics_list.append(self.html_string(
-			'Максимальное число одновременно находящихся клиентов каждого вида карт, чел',
-			max_people_simult_for_each_cat
-		))
-		statistics_list.append(self.html_string(
-			'Минимальное время нахождения одного посетителя по каждому типу карт, мин',
-			min_time_spended_for_each_cat
-		))
-		statistics_list.append(self.html_string(
-			'Минимальное время нахождения одного посетителя в целом, мин',
-			min_time_spended_all
-		))
-		statistics_list.append(self.html_string(
-			'Максимальное время нахождения одного посетителя по каждому типу карт, мин',
-			max_time_spended_for_each_cat
-		))
-		statistics_list.append(self.html_string(
-			'Максимальное время нахождения одного посетителя в целом, мин',
-			max_time_spended_all
-		))
-		statistics_list.append(self.html_string(
-			'Интервал(ы) минимального количества посетителей в целом, ч',
-			min_people_period_all
-		))
-		statistics_list.append(self.html_string(
-			'Интервал(ы) максимального количества посетителей в целом, ч',
-			max_people_period_all
-		))
-		statistics_list.append('</table>')
-		statistics_string = ''.join(statistics_list)
-
-		graph_2_statistics_file = open(stat_filename, 'w')
-		graph_2_statistics_file.write('var graph_2_statistics = "%s"' % (statistics_string))
-		graph_2_statistics_file.close()
+		context_dict = {
+			'from_to_string': from_to_string,
+			'sum_people_for_each_cat': self.cat_value_pairs(sum_people_for_each_cat),
+			'average_people_for_each_cat': self.cat_value_pairs(average_people_for_each_cat),
+			'average_people_all': self.nice_float(average_people_all),
+			'max_people_simult_for_each_cat': self.cat_value_pairs(max_people_simult_for_each_cat),
+			'min_time_spended_for_each_cat': self.cat_value_pairs(min_time_spended_for_each_cat),
+			'min_time_spended_all': self.nice_float(min_time_spended_all),
+			'max_time_spended_for_each_cat': self.cat_value_pairs(max_time_spended_for_each_cat),
+			'max_time_spended_all': self.nice_float(max_time_spended_all),
+			'min_people_period_all': min_people_period_all,
+			'max_people_period_all': max_people_period_all
+		}
+		
+		self.write_report('graph_2.html', context_dict)
 		print 'graph 2 is successfully plotted'
 
 	def plot_graph_3(self, d, header_filename, picture_filename):
