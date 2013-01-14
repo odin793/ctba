@@ -175,11 +175,10 @@ class CTBAGraph(BaseGraph):
 			dataset.insert(0, {'date_time': first_date_str, 'price': 0});
 			dataset.append({'date_time': last_date_str, 'price': 0});
 		
+		# writing data for graph_1 to js file
 		graph_1_data_file = open(data_filename, 'w')
 		for ind, dataset in enumerate(datasets):
-			graph_1_data_file.write('var chartData%d = ' % (ind))
-			json.dump(dataset, graph_1_data_file)
-			graph_1_data_file.write(';\n')
+			graph_1_data_file.write('var chartData%d = %s;\n' % (ind, json.dumps(dataset)))
 		graph_1_data_file.close()
 		print 'graph 1 is successfully plotted' 
 
@@ -290,26 +289,23 @@ class CTBAGraph(BaseGraph):
 		self.write_report('graph_2.html', context_dict)
 		print 'graph 2 is successfully plotted'
 
-	def plot_graph_3(self, d, header_filename, picture_filename):
+	def plot_graph_3(self, d, picture_filename):
+		"""
+		time in is row[2]
+		time out is row[4]
+		minutes_spanded is row[6]
+		"""
+
 		import sys
 		sys.path.append('/opt/local/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages')
 		
 		import cairo
 		import cairoplot
 		from random import random
-		"""
-		time in is row[2]
-		time out is row[4]
-		minutes_spanded is row[6]
-		"""
-		#f = open(header_filename, 'w')
-		#f.write('var graph_3_header = "Учет рабочего времени сотрудников за %s"' % d)
-		#f.close()
 		
 		self.write_report('graph_3.html', {'graph_3_date': d})
 		
 		v_legend = map(str, range(25))
-		
 		graph_3_data = [row for row in self.filter_rows(d, d) if self.is_service(row)]
 		if not graph_3_data:
 			cairoplot.gantt_chart(picture_filename, [[(5,19)]], 1000, 900, ['no_data',], v_legend, [(1,0,0),])
@@ -443,7 +439,7 @@ class CTBAUI(Frame):
 		if v:
 			self.message['text'] = 'ok'
 			self.message['bg'] = 'green'
-			self.ctba_graph_inst.plot_graph_3(user_data, 'js/graph_3_header.js', 'js/graph_3.png')
+			self.ctba_graph_inst.plot_graph_3(user_data, 'js/graph_3.png')
 		else:
 			self.message['text'] = 'bad'
 			self.message['bg'] = 'red'
