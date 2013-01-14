@@ -140,7 +140,7 @@
     <body>
 				{% macro cat_values_output(cat_values_pairs) %}
 					{% for cat, value in cat_values_pairs %}
-						<b>{{ cat }}</b> : {{ value }} {% if not loop.last %} ; {% endif %}
+						<b>{{ cat }}</b>: {{ value }}{% if not loop.last %};{% endif %}
 						{% endfor %}		
 				{% endmacro %}
         
