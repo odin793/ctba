@@ -1,0 +1,11 @@
+table {
+	width: 100%;
+}
+
+table tr {
+	height: 30px;
+}
+
+table td {
+	padding: 5px 10px;
+}

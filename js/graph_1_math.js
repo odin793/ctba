@@ -63,7 +63,7 @@ var listobj_to_list = function(obj, field) {
 var GraphStat = new Class({
 	initialize: function(holder, datasets) {
 		this.stat_holder = $(holder);
-		this.stat_header_holder = $("graph_2_stat_header");
+		this.stat_header_holder = $("graph_1_stat_header");
 		this.datasets = datasets;
 		this.filtered_datasets = [];
 		this.stat_obj = {};
@@ -216,6 +216,7 @@ var GraphStat = new Class({
 		var stat_string = stat_list.to_nice_str(true);
 		stat_string = stat_string.substitute(this.string_stat_obj);
 		this.stat_holder.set('html', stat_string);
+		nice_table();
 	},
 
 });

@@ -4,7 +4,10 @@
 	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	    <title>Одновременное нахождение людей на объекте</title>
 	    <link rel="stylesheet" href="../js/style.css" type="text/css">
-	    <script src="../js/amcharts.js" type="text/javascript"></script>        
+			<link rel="stylesheet" href="../js/table_css.css" type="text/css">
+	    <script src="../js/amcharts.js" type="text/javascript"></script>  
+	    <script src="../js/table_js.js" type="text/javascript"></script>
+			<script type="text/javascript" src="../js/mootools-core-1.4.1-full-compat-yc.js"></script>  	      
 	    <script type="text/javascript">
  	    	var chart;
 				var chartData = {{ chartData }} // html template variable
@@ -148,6 +151,7 @@
         <div style="margin-left:30px;">
 	        <input type="radio" checked="true" name="group" id="rb1" onclick="setDepth()">2D
 	        <input type="radio" name="group" id="rb2" onclick="setDepth()">3D
+				</div>
 			<div id="graph_2_statistics">
 				<p>
 					Одновременное нахождение людей на объекте {{ from_to_string }}
@@ -155,55 +159,58 @@
 				
 				<table>
 					<tr>
-						<td><b>Сумма по каждому виду карт, чел:</b></td>
+						<td>Сумма по каждому виду карт, чел:</td>
 						<td> {{ cat_values_output(sum_people_for_each_cat) }} </td>
 					</tr>
 					
 					<tr>
-						<td><b>Среднее значение числа посетителей в час по каждому виду карт, чел:</b></td>
+						<td>Среднее значение числа посетителей в час по каждому виду карт, чел:</td>
 						<td> {{ cat_values_output(average_people_for_each_cat) }} </td>
 					</tr>
 					
 					<tr>
-						<td><b>Среднее общее значение числа посетителей в час, чел:</b></td>
+						<td>Среднее общее значение числа посетителей в час, чел:</td>
 						<td> {{ average_people_all }} </td> 
 					</tr>
 					
 					<tr>
-						<td><b>Максимальное число одновременно находящихся клиентов каждого вида карт, чел:</b></td>
+						<td>Максимальное число одновременно находящихся клиентов каждого вида карт, чел:</td>
 						<td> {{ cat_values_output(max_people_simult_for_each_cat) }} </td>
 					</tr>
 					
 					<tr>
-						<td><b>Минимальное время нахождения одного посетителя по каждому типу карт, мин:</b></td>
+						<td>Минимальное время нахождения одного посетителя по каждому типу карт, мин:</td>
 						<td> {{ cat_values_output(min_time_spended_for_each_cat) }} </td>
 					</tr>
 					
 					<tr>
-						<td><b>Минимальное время нахождения одного посетителя в целом, мин:</b></td>
+						<td>Минимальное время нахождения одного посетителя в целом, мин:</td>
 						<td> {{ min_time_spended_all }} </td>
 					</tr>
 					
 					<tr>
-						<td><b>Максимальное время нахождения одного посетителя по каждому типу карт, мин:</b></td>
+						<td>Максимальное время нахождения одного посетителя по каждому типу карт, мин:</td>
 						<td> {{ cat_values_output(max_time_spended_for_each_cat) }} </td>
 					</tr>
 					
 					<tr>
-						<td><b>Максимальное время нахождения одного посетителя в целом, мин:</b></td>
+						<td>Максимальное время нахождения одного посетителя в целом, мин:</td>
 						<td> {{ max_time_spended_all }} </td>
 					</tr>
 					
 					<tr>
-						<td><b>Интервал(ы) минимального количества посетителей в целом, ч:</b></td> 
+						<td>Интервал(ы) минимального количества посетителей в целом, ч:</td> 
 						<td> {{ min_people_period_all }} </td>
 					</tr>
 					
 					<tr>
-						<td><b>Интервал(ы) максимального количества посетителей в целом, ч:</b></td>
+						<td>Интервал(ы) максимального количества посетителей в целом, ч:</td>
 						<td> {{ max_people_period_all }} </td> 
 					</tr>
 				</table>
+				<script type="text/javascript">
+					nice_table();
+				</script>
 			</div>
 		</div>
     </body>
